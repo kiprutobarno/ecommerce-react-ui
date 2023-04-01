@@ -69,7 +69,7 @@ const Button = styled.button`
   padding: 10px;
   font-size: 20px;
   background-color: transparent;
-  pointer: cursor;
+  cursor: pointer;
 `;
 
 const Slider = () => {

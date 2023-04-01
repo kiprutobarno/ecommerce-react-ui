@@ -39,3 +39,38 @@ export const categories = [
     title: "Jackets",
   },
 ];
+
+export const popularProducts = [
+  {
+    id: 1,
+    img: "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
+  },
+  {
+    id: 2,
+    img: "https://www.nicepng.com/png/detail/1008-10089351_vrouw-bs-dusty-min-active-shirt.png",
+  },
+  {
+    id: 3,
+    img: "https://www.nicepng.com/png/detail/14-145873_american-flag-pillow-pillow.png",
+  },
+  {
+    id: 4,
+    img: "https://www.nicepng.com/png/detail/227-2279395_gildan-dryblend-pullover-hooded-sweatshirt-12500.png",
+  },
+  {
+    id: 5,
+    img: "https://images.ctfassets.net/5gvckmvm9289/3BlDoZxSSjqAvv1jBJP7TH/65f9a95484117730ace42abf64e89572/Noissue-x-Creatsy-Tote-Bag-Mockup-Bundle-_4_-2.png",
+  },
+  {
+    id: 6,
+    img: "https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png",
+  },
+  {
+    id: 7,
+    img: "https://www.nicepng.com/png/detail/9-94148_umbrella-png-image-umbrella.png",
+  },
+  {
+    id: 8,
+    img: "https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png",
+  },
+];
