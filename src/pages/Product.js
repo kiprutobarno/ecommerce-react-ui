@@ -6,6 +6,8 @@ import Footer from "../components/Footer";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { mobile } from "../responsive";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -51,11 +53,11 @@ const Filter = styled.div`
 `;
 const FilterTitle = styled.span`
   font-size: 20px;
-  font-weight: 200;
+  font-weight: 2;
 `;
 const FilterColor = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
   margin: 0 5px;
@@ -101,44 +103,77 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await fetch(`http://localhost:8000/api/v1/products/${id}`, {
+          method: "GET",
+          headers: {
+            mode: "no-cors",
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+
+        const { data } = await res.json();
+        console.log(data);
+        setProduct(data);
+      } catch (error) {}
+    };
+    getProduct();
+  }, [id]);
+
+  const handleQuantity = (type) => {
+    if (type === "decrease") {
+      quantity > 0 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImageContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={product.img} />
         </ImageContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            This article assumes you already understand basic Git workflow. If
-            not, I suggest reading through the Git Handbook.
-          </Desc>
+          <Title>{product.title}</Title>
+          <Desc>{product.desc}</Desc>
           <Price>$20.00</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="grey" />
+              {product.color &&
+                product.color.map((c) => (
+                  <FilterColor color={c} key={c} onClick={setColor(c)} />
+                ))}
             </Filter>
+            setColor
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product.size &&
+                  product.size.map((s) => (
+                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                  ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <RemoveIcon />
-              <Amount>1</Amount>
-              <AddIcon />
+              <RemoveIcon onClick={() => handleQuantity("decrease")} />
+              <Amount>{quantity}</Amount>
+              <AddIcon onClick={() => handleQuantity("increase")} />
             </AmountContainer>
             <Button>Add to Cart</Button>
           </AddContainer>
