@@ -8,6 +8,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { mobile } from "../responsive";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../redux/cartRedux";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -109,6 +111,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState();
   const [size, setSize] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -123,7 +126,6 @@ const Product = () => {
         });
 
         const { data } = await res.json();
-        console.log(data);
         setProduct(data);
       } catch (error) {}
     };
@@ -138,6 +140,14 @@ const Product = () => {
     }
   };
 
+  const handleClick = () => {
+    //update cart
+    dispatch(
+      // addProduct({ product, quantity, price: product.price * quantity })
+      addProduct({ ...product, quantity, color, size })
+    );
+  };
+
   return (
     <Container>
       <Navbar />
@@ -149,13 +159,13 @@ const Product = () => {
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>{product.desc}</Desc>
-          <Price>$20.00</Price>
+          <Price>{product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {product.color &&
                 product.color.map((c) => (
-                  <FilterColor color={c} key={c} onClick={setColor(c)} />
+                  <FilterColor color={c} key={c} onClick={() => setColor(c)} />
                 ))}
             </Filter>
             setColor
@@ -175,7 +185,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <AddIcon onClick={() => handleQuantity("increase")} />
             </AmountContainer>
-            <Button>Add to Cart</Button>
+            <Button onClick={handleClick}>Add to Cart</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
