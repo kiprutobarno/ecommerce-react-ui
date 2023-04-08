@@ -194,7 +194,7 @@ const Cart = () => {
       } catch (error) {}
     };
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, navigate]);
+  });
 
   return (
     <Container>
@@ -266,18 +266,22 @@ const Cart = () => {
               <SummaryItemCost>$ {cart.total} </SummaryItemCost>
             </SummaryItem>
 
-            <StripeCheckout
-              name="Orderfy"
-              image="https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png "
-              billingAddress
-              shippingAddress
-              description={`Your total cost is $ ${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <SummaryButton>Checkout Now</SummaryButton>
-            </StripeCheckout>
+            {stripeToken ? (
+              <span>Processing. Please Wait...</span>
+            ) : (
+              <StripeCheckout
+                name="Orderfy"
+                image="https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png "
+                billingAddress
+                shippingAddress
+                description={`Amount: $ ${cart.total}`}
+                amount={cart.total * 100}
+                token={onToken}
+                stripeKey={KEY}
+              >
+                <SummaryButton>Checkout Now</SummaryButton>
+              </StripeCheckout>
+            )}
           </Summary>
         </Bottom>
       </Wrapper>
