@@ -143,7 +143,6 @@ const Product = () => {
   const handleClick = () => {
     //update cart
     dispatch(
-      // addProduct({ product, quantity, price: product.price * quantity })
       addProduct({ ...product, quantity, color, size })
     );
   };
